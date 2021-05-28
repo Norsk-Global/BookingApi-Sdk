@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Request Signing Examples | Norsk Global Booking API Sdks </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Request Signing Examples | Norsk Global Booking API Sdks ">
+    <meta name="generator" content="docfx 2">
+    
+    <link rel="shortcut icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="https://norsk.global/wp-content/uploads/2016/11/norsk-logo-1.png" alt="" height="48" width="176">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="examples">Examples</h1>
+
+<h2 id="sign-request">Sign Request</h2>
+<p>Method to generate Signature</p>
+<pre><code class="lang-csharp">private string GenerateSignature(HttpMethod method, string date, string httpResource)
+{
+    var stringToSign = method + &quot;\n&quot; +
+                       //&quot;ToLowerCase(Content-MD5)&quot; +
+                       &quot;\n&quot; +
+                       &quot;application/json&quot; +
+                       &quot;\n&quot; +
+                       date + &quot;\n&quot; +
+                       httpResource;
+    return HmacSha1(_secretAccessKey, stringToSign);
+}
+</code></pre><p>Method to generate Hashed string</p>
+<pre><code class="lang-csharp"> private string HmacSha1(string key, string dataToSign)
+{
+    Byte[] secretBytes = Encoding.UTF8.GetBytes(key);
+    HMACSHA1 hmac = new HMACSHA1(secretBytes);
+    Byte[] dataBytes = Encoding.UTF8.GetBytes(dataToSign);
+    Byte[] calcHash = hmac.ComputeHash(dataBytes);
+    String calcHashString = Convert.ToBase64String(calcHash);
+    return calcHashString;
+}
+</code></pre><p>Example API call with signed request header</p>
+<pre><code class="lang-csharp">public ShipmentResponse GenerateShippingLabel(int orderId, int kitsQty, string contactFullName, string zip, string city,
+    string address1, string address2, string email, string phone)
+{
+    var shipmentModel = new Shipment()
+    {
+        Pieces = new[]
+        {
+            GeneratePieceByKitsQty(kitsQty)
+        },
+        ReadyByDate = DateTime.Now.AddMinutes(10),
+        Hawb = orderId.ToString(),
+        Description = &quot;Kits for medical tests&quot;,
+        NonDox = true,
+        DDP = true,
+        Pallet = false,
+        Consignee = new Consignee
+        {
+            ContactName = contactFullName,
+            CountryCode = &quot;GB&quot;,
+            Zipcode = zip,
+            City = city,
+            Address1 = address1,
+            Address2 = address2,
+            Email = CommonHelper.IsValidEmail(email) ? email : null,
+            PhoneNumber = phone
+        },
+        Service = new Service
+        {
+            Code = &quot;1CP&quot;
+        },
+        LabelFormat = &quot;pdf&quot;
+    };
+
+    string dateString = DateTime.Now.ToString(&quot;R&quot;);
+    string httpResource = &quot;/api/shipment&quot;;
+
+    using (var requestMessage =
+        new HttpRequestMessage(HttpMethod.Post, httpResource))
+    {
+        requestMessage.Headers.TryAddWithoutValidation(HeaderNames.Authorization,
+            $&quot;{_accessKeyId}:{GenerateSignature(HttpMethod.Post, dateString, $&quot;{httpResource}&quot;)}&quot;);
+        requestMessage.Headers.Add(HeaderNames.Date, dateString);
+
+        requestMessage.Content = new JsonContent(JsonConvert.SerializeObject(shipmentModel));
+
+        var response = _httpClient.SendAsync(requestMessage).ContinueWith(task =&gt;
+        {
+            try
+            {
+                return task.Result;
+            }
+            catch (AggregateException ex)
+            {
+                return null;
+            }
+            catch (WebException ex)
+            {
+                return null;
+            }
+        }).Result;
+
+        if (response == null)
+        {
+            return null;
+        }
+
+        var responseText = response.Content.ReadAsStringAsync().Result;
+        _logger.InsertLog(LogLevel.Debug, &quot;Norsk Response: Create Shipment&quot;, responseText);
+
+        var shipmentResponse = JsonConvert.DeserializeObject&lt;ShipmentResponse&gt;(responseText);
+        if (shipmentResponse != null)
+        {
+            return shipmentResponse;
+        }
+    }
+
+
+    return null;
+}
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Norsk-Global/BookingApi-docs/blob/master/src/docs/csharp/examples/request_signing_example.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

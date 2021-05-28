@@ -1,0 +1,67 @@
+{
+  "docs/csharp/examples/booking_examples.html": {
+    "href": "docs/csharp/examples/booking_examples.html",
+    "title": "Booking Examples | Norsk Global Booking API Sdks",
+    "keywords": "Examples Book Shipment Booking a shipment using static volatile ApiClient. var response = await ApiClient .BookShipment(booking => booking .CreateBooking() .WithReadyByDate() .WithHawb(\"123123123\") .WithDescription(\"test Clothing\") .WithDocuments() .WithPieces(pieces => pieces .AddPiece(piece => piece .Depth(1.00m) .Height(1.00m) .Width(1.00m) .Weight(1.00m) .NumberOfPieces(1))) .WithConsignee(consignee => consignee .ContactName(\"Test\") .Company(\"Test\") .Address1(\"2 Willow Road\") .Zipcode(\"SL3 0BS\") .City(\"Slough\") .CountryCode(\"GB\")) .WithServiceCode(\"IEL\") ); Booking a shipment using the Dependency Injection public class BookingPipeline { private readonly IApiClient _apiClient; public BookingPipeline(IApiClient apiClient) { _apiClient = apiClient; } public async Task<string> BookShipment() { var response = await _apiClient .BookShipment(booking => booking .CreateBooking() .WithReadyByDate() .WithHawb(\"123123123\") .WithDescription(\"test Clothing\") .WithDocuments() .WithPieces(pieces => pieces .AddPiece(piece => piece .Depth(1.00m) .Height(1.00m) .Width(1.00m) .Weight(1.00m) .NumberOfPieces(1))) .WithConsignee(consignee => consignee .ContactName(\"Test\") .Company(\"Test\") .Address1(\"2 Willow Road\") .Zipcode(\"SL3 0BS\") .City(\"Slough\") .CountryCode(\"GB\")) .WithServiceCode(\"IEL\") ); return response.Barcode; } }"
+  },
+  "docs/csharp/examples/request_signing_example.html": {
+    "href": "docs/csharp/examples/request_signing_example.html",
+    "title": "Request Signing Examples | Norsk Global Booking API Sdks",
+    "keywords": "Examples Sign Request Method to generate Signature private string GenerateSignature(HttpMethod method, string date, string httpResource) { var stringToSign = method + \"\\n\" + //\"ToLowerCase(Content-MD5)\" + \"\\n\" + \"application/json\" + \"\\n\" + date + \"\\n\" + httpResource; return HmacSha1(_secretAccessKey, stringToSign); } Method to generate Hashed string private string HmacSha1(string key, string dataToSign) { Byte[] secretBytes = Encoding.UTF8.GetBytes(key); HMACSHA1 hmac = new HMACSHA1(secretBytes); Byte[] dataBytes = Encoding.UTF8.GetBytes(dataToSign); Byte[] calcHash = hmac.ComputeHash(dataBytes); String calcHashString = Convert.ToBase64String(calcHash); return calcHashString; } Example API call with signed request header public ShipmentResponse GenerateShippingLabel(int orderId, int kitsQty, string contactFullName, string zip, string city, string address1, string address2, string email, string phone) { var shipmentModel = new Shipment() { Pieces = new[] { GeneratePieceByKitsQty(kitsQty) }, ReadyByDate = DateTime.Now.AddMinutes(10), Hawb = orderId.ToString(), Description = \"Kits for medical tests\", NonDox = true, DDP = true, Pallet = false, Consignee = new Consignee { ContactName = contactFullName, CountryCode = \"GB\", Zipcode = zip, City = city, Address1 = address1, Address2 = address2, Email = CommonHelper.IsValidEmail(email) ? email : null, PhoneNumber = phone }, Service = new Service { Code = \"1CP\" }, LabelFormat = \"pdf\" }; string dateString = DateTime.Now.ToString(\"R\"); string httpResource = \"/api/shipment\"; using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, httpResource)) { requestMessage.Headers.TryAddWithoutValidation(HeaderNames.Authorization, $\"{_accessKeyId}:{GenerateSignature(HttpMethod.Post, dateString, $\"{httpResource}\")}\"); requestMessage.Headers.Add(HeaderNames.Date, dateString); requestMessage.Content = new JsonContent(JsonConvert.SerializeObject(shipmentModel)); var response = _httpClient.SendAsync(requestMessage).ContinueWith(task => { try { return task.Result; } catch (AggregateException ex) { return null; } catch (WebException ex) { return null; } }).Result; if (response == null) { return null; } var responseText = response.Content.ReadAsStringAsync().Result; _logger.InsertLog(LogLevel.Debug, \"Norsk Response: Create Shipment\", responseText); var shipmentResponse = JsonConvert.DeserializeObject<ShipmentResponse>(responseText); if (shipmentResponse != null) { return shipmentResponse; } } return null; }"
+  },
+  "docs/csharp/examples/retrievelabel_examples.html": {
+    "href": "docs/csharp/examples/retrievelabel_examples.html",
+    "title": "Retrieve Label Examples | Norsk Global Booking API Sdks",
+    "keywords": ""
+  },
+  "docs/csharp/examples/track_examples.html": {
+    "href": "docs/csharp/examples/track_examples.html",
+    "title": "Track Examples | Norsk Global Booking API Sdks",
+    "keywords": ""
+  },
+  "docs/csharp/index.html": {
+    "href": "docs/csharp/index.html",
+    "title": "Getting Started | Norsk Global Booking API Sdks",
+    "keywords": "Getting Started Incoperating our extensive API into your pre-existing booking solution or workflow is as simple as download, setup and go. Our booking API provides the means to access all of our endpoints accessible via our API. We also provide a package to plug in the ApiClient via dependency injection so you can share your authentication details across the lifetime scope; instead of having to re-declare for each request. Requirements Newtonsoft.Json >= 12.0.3 Installation Install-Package Norsk.BookingApi.Abstractions Install-Package Norsk.BookingApi.Core"
+  },
+  "docs/csharp/nuget_packages.html": {
+    "href": "docs/csharp/nuget_packages.html",
+    "title": "Norsk Nuget Packages | Norsk Global Booking API Sdks",
+    "keywords": "Norsk Nuget Packages Key Packages"
+  },
+  "docs/golang/index.html": {
+    "href": "docs/golang/index.html",
+    "title": "Under Development | Norsk Global Booking API Sdks",
+    "keywords": ""
+  },
+  "docs/index.html": {
+    "href": "docs/index.html",
+    "title": "Overview | Norsk Global Booking API Sdks",
+    "keywords": "Overview Norsk Global Software Development Kits, for pre-defined incoperation into our extensive Booking API. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Endpoints Book Shipment Track Shipment Retrieve Shipment Dimensions Retrieve Shipment Label Retrieve Item Dimensions Retrieve Item Scanned Image"
+  },
+  "docs/java/index.html": {
+    "href": "docs/java/index.html",
+    "title": "Under Development | Norsk Global Booking API Sdks",
+    "keywords": ""
+  },
+  "docs/PHP/request_signing_example.html": {
+    "href": "docs/PHP/request_signing_example.html",
+    "title": "Request Signing Examples | Norsk Global Booking API Sdks",
+    "keywords": "Examples Signing Request to Norsk API <?php $NorskAccessKeyId=\"\"; $NorskSecretAccessKey=\"\"; date_default_timezone_set('Europe/London'); $d = time(); $now = date('D, d M Y H:i:s', $d); $contentType=\"application/json\"; $body =''; // request body $md5=md5($body, false); $StringToSign = \"POST\\n\".$md5.\"\\n\".$contentType.\"\\n\".$now.\" GMT\\n\".\"/api/shipment\"; $Signature = Base64_encode(hash_hmac(\"SHA1\", $StringToSign,$NorskSecretAccessKey,true)); echo $StringToSign, \"\\n\"; $url = 'http://api.norsk-global.com/api/shipment'; // use key 'http' even if you send the request to https://... $options = array( 'http' => array( 'ignore_errors' => true, 'header' => 'Authorization: '.$NorskAccessKeyId.\":\".$Signature.\"\\r\\n\". 'Date: '.$now.\"\\r\\n\". \"Accept: application/json\\r\\n\". \"Content-Type: application/json\\r\\n\", 'method' => 'POST', 'content' => $body ) ); $context = stream_context_create($options); $result = @file_get_contents($url, false, $context); if ($result === FALSE) { echo 'Errror'; } // This will echo the results, you might get {\"Message\":\"An unknown error occurred\",\"Reference\":\"11b64e965ac34bd8a9c34ae17cddc195\"} // In which case just pass over the reference to us so we can investigate the issue easier. echo $result ?>"
+  },
+  "docs/python/index.html": {
+    "href": "docs/python/index.html",
+    "title": "Under Development | Norsk Global Booking API Sdks",
+    "keywords": ""
+  },
+  "docs/ruby/index.html": {
+    "href": "docs/ruby/index.html",
+    "title": "Under Development | Norsk Global Booking API Sdks",
+    "keywords": ""
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "Norsk Global Booking API | Norsk Global Booking API Sdks",
+    "keywords": "Norsk Global Booking API Description This SDK will help you to incorporate Norsk Globals Extensive Booking Api ( Norsk Booking Api ) into every day applications, business processes, and workflows. Use one of our many SDKs to get started quickly and easily integrate API calls into your applications. Norsk Global Booking APIs: Retrieve Scanned Image : Retrieved captured image of your shipment present. Retrieve Shipment Dimensions : Retrieve captured weight/dimensions for multiple shipments. Retrieve Item Dimensions : Retrieve captured weight/dimensions for a shipment items. Track Shipment : Retrieve shipment tracking information. Book Shipment : Book a shipment. Retrieve Shipment Label : Generate a label for a booked shipment."
+  }
+}

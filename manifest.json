@@ -1,0 +1,271 @@
+{
+  "sitemap": {
+    "baseUrl": "https://norsk-global.github.io/BookingApi-Sdk/"
+  },
+  "homepages": [],
+  "source_base_path": "D:/a/BookingApi-Sdk/BookingApi-Sdk/src",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      },
+      "is_incremental": false
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Build.cmd",
+      "output": {
+        "resource": {
+          "relative_path": "Build.cmd"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Test.cmd",
+      "output": {
+        "resource": {
+          "relative_path": "Test.cmd"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/PHP/request_signing_example.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/PHP/request_signing_example.html",
+          "hash": "1me89JvfRmU+qMBNPvssGg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/csharp/examples/booking_examples.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/csharp/examples/booking_examples.html",
+          "hash": "FVc4YiuQZYjbHUd7O8XtpQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/csharp/examples/request_signing_example.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/csharp/examples/request_signing_example.html",
+          "hash": "hA6kYlj2gVPfGK/G43rrHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/csharp/examples/retrievelabel_examples.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/csharp/examples/retrievelabel_examples.html",
+          "hash": "6PKlmIXVy7Be+UXkiWuKvA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/csharp/examples/track_examples.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/csharp/examples/track_examples.html",
+          "hash": "WB3urpVts677yt503eLQNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/csharp/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/csharp/index.html",
+          "hash": "DkwIWwqpOhtg63CqA5pg9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/csharp/nuget_packages.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/csharp/nuget_packages.html",
+          "hash": "maI/CdtRSMECE/Iq1MbJqQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/golang/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/golang/index.html",
+          "hash": "Z6IUDYNSZlilhfN2PZxF0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/index.html",
+          "hash": "j89dkJqqlACDoY5ib2+CZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/java/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/java/index.html",
+          "hash": "Nhb/61nXjspM8bIgf0PFvA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/python/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/python/index.html",
+          "hash": "gcvHmBD1cgD++T4bCatHnQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/ruby/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/ruby/index.html",
+          "hash": "juAnbfJA2vBv0lfW0r8S0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html",
+          "hash": "eIIFyBJZClkWQ5yHKOgMEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "58ZTaW/1SgoLSoieSi/YZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "WPbAEXGahidPMFk13/56yQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 13,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
